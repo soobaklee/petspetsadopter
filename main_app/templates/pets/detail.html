@@ -3,19 +3,24 @@
 
 <h1>Pets Pets Biography</h1>
 <div class="card">
-        <div class="card-content">
-          <span class="card-title">{{ pet.name }}</span>
-          <p>Kingdom: {{pet.kingdom}}</p>
-          <p>Species: {{pet.species}}</p>
-          <p>Species, common: {{pet.common_name}}</p>
-          {% if pet.age > 0 %}
-          <p>Age: {{pet.age}}</p>
-          {% else %}
-          <p>Age: Just made it out into the world!</p>
-          {% endif %}
-          <p>Height: {{pet.height}}</p>
-          <p>Weight: {{pet.weight}}</p>
-        </div>
-      </div>
+  <div class="card-content">
+    <span class="card-title">{{ pet.name }}</span>
+    <p>Kingdom: {{pet.kingdom}}</p>
+    <p>Species: {{pet.species}}</p>
+    <p>Species, common: {{pet.common_name}}</p>
+    {% if pet.age > 0 %}
+    <p>Age: {{pet.age}}</p>
+    {% else %}
+    <p>Age: Just made it out into the world!</p>
+    {% endif %}
+    <p>Height: {{pet.height}}</p>
+    <p>Weight: {{pet.weight}}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'pets_update' pet.id %}">Edit</a>
+    <a href="{% url 'pets_delete' pet.id %}">Delete</a>
+  </div>
+</div>
+
 
 {% endblock %}

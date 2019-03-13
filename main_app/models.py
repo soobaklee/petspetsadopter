@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from datetime import date
 
 # Create your models here.
@@ -15,3 +16,8 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'pet_id': self.id})
+
+class Nutrition(models.Model):

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Energy, User
+from .models import Energy, User, Pet
 
 class EnergyForm(ModelForm):
     class Meta:
@@ -11,7 +11,7 @@ class UserSignupForm(ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'password', 'email']
 
-# class HeavenForm(ModelForm):
-#     class Meta:
-#         model = Pet
-#         fields = ['heaven']
+class HeavenForm(ModelForm):
+    class Meta:
+        model = Pet
+        fields = ['heaven']

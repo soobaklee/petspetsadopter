@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Pet
-from .forms import EnergyForm
+from .forms import EnergyForm, HeavenForm
 
 # Create your views here.
 def home(request):
@@ -48,9 +48,19 @@ class PetDelete(DeleteView):
     model = Pet
     success_url = '/pets/'
 
-def send_heaven(request, pet_id):
-    
-    if heaven_form.is_valid():
-        heaven.pet_id == True
-    success_url = '/pets/heaven/'
 
+def change_heaven_true(request, pet_id):
+    pet = Pet.objects.get(id=pet_id)
+    heaven_form = HeavenForm(request.POST)
+    if heaven_form.is_valid():
+        new_heaven = heaven_form.save(commit=False)
+        new_heaven.pet_id = pet_id
+        new_heaven.save()
+    return redirect('/pets/heaven/')
+
+def send_heaven(request, pet_id):
+    pet = Pet.objects.get(id=pet_id)
+    heaven_form = HeavenForm()
+    return render(request, 'pets/send_heaven.html', { 
+        'pet': pet, 'heaven_form': heaven_form 
+    })

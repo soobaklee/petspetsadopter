@@ -10,8 +10,9 @@ urlpatterns = [
     path('pets/<int:pet_id>/', views.pets_detail, name="detail"),
     path('pets/create/', views.PetCreate.as_view(), name='pets_create'),
     path('pets/<int:pk>/update/', views.PetUpdate.as_view(), name='pets_update'),
-    path('pets/<int:pk>/heaven/', views.send_heaven, name='send_heaven'),
+    path('pets/<int:pet_id>/heaven/', views.send_heaven, name='send_heaven'),
     path('pets/<int:pk>/delete/', views.PetDelete.as_view(), name='pets_delete'),
     path('pets/<int:pet_id>/add_energy/', views.add_energy, name='add_energy'),
+    path('pets/<int:pet_id>/change_heaven_true/', views.change_heaven_true, name='change_heaven'),
 
 ]

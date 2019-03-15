@@ -13,6 +13,17 @@ ENERGY_SOURCES = (
     ('L', 'Sunlight'),
 )
 
+class Necessity(models.Model):
+    item = models.CharField(max_length=50)
+    color = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self._check_column_name_clashes
+
+    def get_absolute_url(self):
+        return reverse('necessities_detail', kwarts={'pk': self.id})
+
+
 class Pet(models.Model):
     name = models.CharField(max_length=100)
     kingdom = models.CharField(max_length=100)
@@ -23,6 +34,7 @@ class Pet(models.Model):
     weight = models.IntegerField('Weight (lbs)')
     intro = models.TextField(max_length=300)
     heaven = models.BooleanField(default=False)
+    necessities = models.ManyToManyField(Necessity)
     users = models.ManyToManyField(User)
 
     def __str__(self):

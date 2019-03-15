@@ -6,7 +6,8 @@ from .forms import EnergyForm, HeavenForm
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    pets = Pet.objects.all()
+    return render(request, 'home.html', {'pets': pets})
 
 def heaven(request):
     pets = Pet.objects.all()
@@ -49,13 +50,12 @@ class PetDelete(DeleteView):
     success_url = '/pets/'
 
 
-def change_heaven_true(request, pet_id):
+def heaven_true(request, pet_id):
     pet = Pet.objects.get(id=pet_id)
     heaven_form = HeavenForm(request.POST)
     if heaven_form.is_valid():
-        new_heaven = heaven_form.save(commit=False)
-        new_heaven.pet_id = pet_id
-        new_heaven.save()
+        pet.heaven = True
+        pet.save()
     return redirect('/pets/heaven/')
 
 def send_heaven(request, pet_id):

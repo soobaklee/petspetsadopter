@@ -5,7 +5,7 @@
 <h4>Are you sure you want to send <span class="teal-text">{{object.name}}</span> to heaven?</h4>
 
 
-<form action="{% url 'change_heaven' pet.id %}" method="post">
+<form action="{% url 'heaven_true' pet.id %}" method="post">
     {% csrf_token %}
     {{heaven_form.as_p}}
     <a href="{% url 'detail' pet.id %}" class="btn">{{object.name}} needs more time on Earth</a>

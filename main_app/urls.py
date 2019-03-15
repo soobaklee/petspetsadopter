@@ -13,6 +13,6 @@ urlpatterns = [
     path('pets/<int:pet_id>/heaven/', views.send_heaven, name='send_heaven'),
     path('pets/<int:pk>/delete/', views.PetDelete.as_view(), name='pets_delete'),
     path('pets/<int:pet_id>/add_energy/', views.add_energy, name='add_energy'),
-    path('pets/<int:pet_id>/change_heaven_true/', views.change_heaven_true, name='change_heaven'),
+    path('pets/<int:pet_id>/heaven_true/', views.heaven_true, name='heaven_true'),
 
 ]

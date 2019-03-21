@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+  <ul>
+  {% for pet in filter.qs %}
+  <div class="col s6">
+      <div class="card-horizontal">
+        <div class="card-image">
+          <img src="{{pet.url}}" alt="">
+          <div class="card-content">
+            <span class="card-title">{{pet.name}}</span>
+            <p>Kingdom: {{pet.kingdom}}</p>
+            <p>Species: {{pet.species}}</p>
+            <p>Species, common: {{pet.common_name}}</p>
+            {% if pet.age > 0 %}
+            <p>Age: {{pet.age}}</p>
+            {% else %}
+            <p>Age: Just made it out into the world!</p>
+            {% endif %}
+            <p>Height: {{pet.height}}</p>
+            <p>Weight: {{pet.weight}}</p>
+            <div class="card-action">
+              <a href="{% url 'pets_update' pet.id %}">Edit Bio</a>
+              <a href="{% url 'send_heaven' pet.id %}">Send to Heaven</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </ul>
+{% endblock %}

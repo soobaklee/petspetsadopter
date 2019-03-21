@@ -8,38 +8,42 @@
     <div class="card">
       <div class="card-image">
         <img src="{{pet.url}}" alt="">
-      <div class="card-content">
-        <span class="card-title">{{pet.name}}</span>
-        <p>Kingdom: {{pet.kingdom}}</p>
-        <p>Species: {{pet.species}}</p>
-        <p>Species, common: {{pet.common_name}}</p>
-        {% if pet.age > 0 %}
-        <p>Age: {{pet.age}}</p>
-        {% else %}
-        <p>Age: Just made it out into the world!</p>
-        {% endif %}
-        <p>Height: {{pet.height}}</p>
-        <p>Weight: {{pet.weight}}</p>
-        <div class="card-action">
-          <a href="{% url 'pets_update' pet.id %}">Edit</a>
-          <a href="{% url 'send_heaven' pet.id %}">Send to Heaven</a>
-          <a href="{% url 'pets_delete' pet.id %}">Delete</a>
+        <div class="card-content">
+          <span class="card-title">{{pet.name}}</span>
+          <p>Kingdom: {{pet.kingdom}}</p>
+          <p>Species: {{pet.species}}</p>
+          <p>Species, common: {{pet.common_name}}</p>
+          {% if pet.age > 0 %}
+          <p>Age: {{pet.age}}</p>
+          {% else %}
+          <p>Age: Just made it out into the world!</p>
+          {% endif %}
+          <p>Height: {{pet.height}}</p>
+          <p>Weight: {{pet.weight}}</p>
+          <div class="card-action">
+            <a href="{% url 'pets_update' pet.id %}">Edit Bio</a>
+            <a href="{% url 'send_heaven' pet.id %}">Send to Heaven</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
   <div class="col s6">
     <table class="striped centered">
       <thead>
-        <tr><th>Energy</th><th>Date</th></tr>
+        <tr>
+          <th>Energy</th>
+          <th>Date</th>
+        </tr>
       </thead>
       <tbody>
         {% for energy in pet.energy_set.all %}
+        {% if energy.is_today %}
         <tr>
           <td>{{energy.get_energy_source_display}}</td>
           <td>{{energy.date}}</td>
         </tr>
+        {% endif %}
         {% endfor %}
       </tbody>
     </table>
@@ -57,15 +61,44 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col s6">
+    {% if pet.home_set.count %}
+    {% for home in pet.home_set.all %}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          <h3>Housing</h3>
+          A {{home.get_size_display}} {{home.get_style_display}} that is {{home.color}}
+        </span>
+        {% endfor %}
+        {% else %}
+        <h3>Housing</h3>
+        <h5>Help {{pet.name}} find a home</h5>
+        <form action="{% url 'add_home' pet.id %}" method="post">
+          {% csrf_token %}
+          {{ home_form.as_table }}
+          <input type="submit" value="Get Home" class="btn">
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+  var selectEl = document.getElementById('id_style');
+  M.FormSelect.init(selectEl);
+  var selectEl = document.getElementById('id_size');
+  M.FormSelect.init(selectEl);
   var dateEl = document.getElementById('id_date');
-    M.Datepicker.init(dateEl, {
-      format: 'yyyy-mm-dd',
-      defaultDate: new Date(),
-      setDefaultDate: true,
-      autoClose: true
-    });
-var selectEl = document.getElementById('id_energy_source');
-M.FormSelect.init(selectEl);
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+  var selectEl = document.getElementById('id_energy_source');
+  M.FormSelect.init(selectEl);
 </script>
 {% endblock %}

@@ -13,15 +13,26 @@ ENERGY_SOURCES = (
     ('L', 'Sunlight'),
 )
 
-class Necessity(models.Model):
-    item = models.CharField(max_length=50)
-    color = models.CharField(max_length=40)
+SIZES = (
+    ('T', 'Extra Small'),
+    ('S', 'Small'),
+    ('M', 'Medium'),
+    ('L', 'Large'),
+    ('X', 'Extra Large'),
+    ('H', 'Huge'),
+)
 
-    def __str__(self):
-        return self._check_column_name_clashes
-
-    def get_absolute_url(self):
-        return reverse('necessities_detail', kwarts={'pk': self.id})
+STYLES = (
+    ('B', 'Blanket'),
+    ('P', 'Pillow'),
+    ('A', 'Apartment'),
+    ('C', 'Condo'),
+    ('H', 'House'),
+    ('T', 'Aquarium'),
+    ('L', 'Clay Pot'),
+    ('V', 'Vase'),
+    ('E', 'Petri Dish'),
+)
 
 
 class Pet(models.Model):
@@ -31,10 +42,9 @@ class Pet(models.Model):
     common_name = models.CharField(max_length=100)
     birthday = models.DateField(null=True)
     height = models.IntegerField('Height (in)')
-    weight = models.IntegerField('Weight (lbs)')
+    weight = models.FloatField('Weight (lbs)')
     intro = models.TextField(max_length=300)
     heaven = models.BooleanField(default=False)
-    necessities = models.ManyToManyField(Necessity)
     users = models.ManyToManyField(User)
 
     def __str__(self):
@@ -49,20 +59,60 @@ class Pet(models.Model):
             new_energy
 
     def energized_infull(self):
-        return self.energy_set.filter(date=date.today()).count() >= 2
+        return self.energy_set.filter(date=date.today()).count() >= 3
+
+    def add_home(request, pet_id):
+        form = HomeForm(request.POST)
+        if form.is_valid():
+            new_home
+
+    def today_energy(self):
+        current_date = date.today()
+        return self.energy_set.filter(date=current_date)
 
 class Energy(models.Model):
     date = models.DateTimeField()
     energy_source = models.CharField(
         max_length=1,
         choices=ENERGY_SOURCES,
-        default=ENERGY_SOURCES[0][0]  
+        default=ENERGY_SOURCES[0][0]
     )
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return f"{self.get_energy_source_display()} on {self.date}"
 
+    @property
+    def is_today(self):
+        print(self.date.strftime("%Y-%m-%d"))
+        print(date.today())
+        print(self.date.strftime("%Y-%m-%d") == date.today().strftime("%Y-%m-%d"))
+        return self.date.strftime("%Y-%m-%d") == date.today().strftime("%Y-%m-%d")
+        # return self.date == date.today()
+
     class Meta:
         ordering = ['-date']
-    
+
+
+class Home(models.Model):
+    color = models.CharField(
+        max_length=30,
+        default='White',
+    )
+    style = models.CharField(
+        max_length=1,
+        choices=STYLES,
+        default=STYLES[0][0]
+    )
+    size = models.CharField(
+        max_length=1,
+        choices=SIZES,
+        default=SIZES[0][0]
+    )
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"A {self.get_size_display()}, {self.color} {self.get_style_display()}"
+
+    class Meta:
+        ordering = ['style']

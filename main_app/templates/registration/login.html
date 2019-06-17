@@ -2,12 +2,12 @@
 {% block content %}
 <div class="beginning">
 <div class="login">
-<h1>Log In</h1>
+<h3 class="center-align">Log In</h3>
 
 <form method="post" action="{% url 'login' %}">
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" class="btn" value="login" style="margin: 0 auto; margin-top: 50px">
+  <input type="submit" class="btn-large green" value="login" style="margin: 0 auto; margin-top: 50px">
   <input type="hidden" name="next" value="{{ next }}">
 </form>
 </div>

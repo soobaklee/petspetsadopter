@@ -41,7 +41,7 @@ class Pet(models.Model):
     species = models.CharField(max_length=150)
     common_name = models.CharField(max_length=100)
     birthday = models.DateField(null=True)
-    height = models.IntegerField('Height (in)')
+    height = models.FloatField('Height (in)')
     weight = models.FloatField('Weight (lbs)')
     intro = models.TextField(max_length=300)
     heaven = models.BooleanField(default=False)
@@ -116,3 +116,10 @@ class Home(models.Model):
 
     class Meta:
         ordering = ['style']
+
+class Photo(models.Model):
+    url = models.CharField(max_length=250)
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for pet_id: {self.pet_id}, {self.pet.name} @ {self.url}"

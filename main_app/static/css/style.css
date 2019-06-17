@@ -10,10 +10,12 @@ main {
   max-width: 1000px;
 }
 
-footer {
-  padding-top: 0;
-  text-align: right;
+.page-footer {
+  padding-top: 10px;
+  text-align: center;
+  height: 40px;
 }
+
 th > label {
   font-size: 1.3em;
 }
@@ -35,7 +37,7 @@ h1 {
 
 .login {
   /* max-height: 1000px; */
-  border: 2px solid black;
+  border: 2px solid green;
   width: 550px;
   height: 700px;
   padding: 40px 40px 70px 40px;
@@ -63,6 +65,15 @@ h1 {
 .login form p span, .login form ul li {
   display: none;
   text-align: center;
+}
+
+.home-img {
+  width: 100%;
+  text-align: justify;
+}
+
+.pet-name {
+  font-size: 24px;
 }
 
 .beginning {
@@ -111,6 +122,22 @@ textarea.materialize-textarea {
   border-bottom: none;
 }
 
-#btn {
-  background: green;
+.login .btn-large {
+  font-size: 20px;
+}
+
+.search {
+  text-align: center;
+}
+
+.search > form > input {
+  border: 1px solid green; 
+  width: 50%; min-width: 350px; 
+  text-align: center; 
+  height:35px; 
+  align-items: center;
+}
+
+h3 {
+  padding: 15px 0;
 }

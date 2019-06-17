@@ -2,14 +2,14 @@
 {% block content %}
 <div class="beginning">
   <div class="login">
-    <h1>Sign Up</h1>
+    <h3 class="center-align">Sign Up</h3>
     {% if error_message %}<p class="red-text">{{error_message}}</p>{% endif %}
     <form method="post" action="{% url 'signup' %}">
       {% csrf_token %}
       <table>
         {{ form.as_p }}
       </table>
-      <input type="submit" class="btn" value="Sign Up" style="margin: 0 auto; margin-top: 50px">
+      <input type="submit" class="btn-large green" value="Sign Up" style="margin: 0 auto; margin-top: 50px">
     </form>
   </div>
 </div>

@@ -1,33 +1,47 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Meet the Pets Pets</h1>
-<br>
-<br>
-<br>
+<div class="block">
+    <div class="header">
+        <h3 class="center-align">Meet the Pets Pets</h3>
+    </div>
+    <div class="search center-align" style="height: 40px">
+        <form action="" method="GET">
+            <input
+                style="border-bottom: 2px solid green; border-top: 2px; width: 50%; min-width: 350px; text-align: center; height:40px; margin: 0; align-self: center"
+                type="text" name="q" autocomplete="off">
+            <button class="btn green" style="align-self: center" type="submit">Find A Pet</button>
+            <!-- <button class="btn green" style="align-self: center" >All Pets</button> -->
+        </form>
+    </div>
+</div>
 <br>
 
-<div class="row">
-{% for pet in pets %}
-{% if pet.heaven == False %}
-    <div class="col s6">
-        <div class="card">
+
+<div class="row pets-index">
+    {% for pet in pets %}
+    {% if pet.heaven == false %}
+    <div class="col s6" style="justify-content: stretch;">
+        <div class="card" style="margin-top: 50px">
             <div class="card-image">
-                <img
-                    src="{{pet.url}}">
-                <span class="card-title" style="width:100%; background: rgba(0, 0, 0, 0.5);"></span>
+                {% for photo in pet.photo_set.all %}
+                <img src="{{photo.url}}">
+                {% endfor %}
             </div>
             <a href="{% url 'detail' pet.id %}">
-            <div class="card-content black-text">
-                <p>{{pet.name}}, {{pet.common_name}}</p>
-                <p>{{pet.intro}}</p>
-            </div>
-        </a>
+                <div class="card-content black-text">
+                    <p>{{pet.name}}, {{pet.common_name}}</p>
+                    <p>{{pet.intro}}</p>
+                </div>
+            </a>
         </div>
     </div>
-    {% endif %}
+    {% endif%}
+    {% empty %}
+
+    <p>No Pet like the one you are looking for. Look for another pet!</p>
+
     {% endfor %}
 </div>
-
 
 {% endblock %}

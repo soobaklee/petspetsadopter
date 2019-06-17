@@ -15,8 +15,9 @@ urlpatterns = [
     path('pets/<int:pet_id>/add_energy/', views.add_energy, name='add_energy'),
     path('pets/<int:pet_id>/heaven_true/', views.heaven_true, name='heaven_true'),
     path('pets/<int:pet_id>/add_home/', views.add_home, name='add_home'),
+    path('pets/<int:pet_id>/add_photo/', views.add_photo, name="add_photo"),
     path('pets/search/', views.pets_search, name='pets_search'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', views.signup, name='signup'),
-
 ]
+

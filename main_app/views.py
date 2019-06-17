@@ -4,10 +4,15 @@ from django.contrib.auth import login
 from django.http import HttpResponse, HttpRequest
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
-from .models import Pet, Home
+import uuid
+import boto3
 from .forms import EnergyForm, HeavenForm, HomeForm
 from .filters import PetFilter
+from django.db.models import Q
+from .models import Pet, Home, Photo
 
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'petspetsadopter'
 
 # Create your views here.
 def home(request):
@@ -22,8 +27,14 @@ def about(request):
     return render(request, 'about.html')
 
 def pets_index(request):
-    pets = Pet.objects.all()
-    return render(request, 'pets/index.html', {'pets': pets})
+
+    query_string=request.GET.get('q')
+    if query_string == None:
+        pets = Pet.objects.all()
+        return render(request, 'pets/index.html', {'pets': pets})
+    else:    
+        pets = Pet.objects.filter(Q(name__icontains=query_string) | Q(kingdom__icontains=query_string) | Q(common_name__icontains=query_string) | Q(species__icontains=query_string))
+        return render(request, 'pets/index.html', {'pets': pets})
 
 def pets_detail(request, pet_id):
     pet = Pet.objects.get(id=pet_id)
@@ -80,8 +91,11 @@ def add_home(request, pet_id):
         new_home.save()
     return redirect('detail', pet_id=pet_id)
 
+# def delete_home(request, pet_id):
+
+
 def items_index(request):
-    pets = Pet.objects.all()
+    pets = Pet.objects.heaven_set == False
     homes = Home.objects.all()
     return render(request, 'items/index.html', {'pets': pets, 'homes': homes})
 
@@ -104,5 +118,24 @@ def pets_search(request):
     pet_list = Pet.objects.all()
     pet_filter = PetFilter(request.GET, queryset=pet_list)
     return render(request, 'pet_list.html', {'filter': pet_filter})
+
+def add_photo(request, pet_id):
+	# photo-file was the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # assign to pet_id or pet(if I have a pet object
+            photo = Photo(url=url, pet_id=pet_id)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', pet_id=pet_id)
 
 

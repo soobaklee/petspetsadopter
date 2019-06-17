@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Send {{pet.name}} to Heaven</h1>
-<h4>Are you sure you want to send <span class="teal-text">{{object.name}}</span> to heaven?</h4>
+<h3 class="center-align">Time to let {{pet.name}} go to Heaven?</h3>
+<h4>Are you sure you want to send <span class="green-text">{{pet.name}}</span> to <span class="green-text">heaven</span>?</h4>
 
 
 <form action="{% url 'heaven_true' pet.id %}" method="post">
     {% csrf_token %}
     {{heaven_form.as_p}}
-    <a href="{% url 'detail' pet.id %}" class="btn">{{object.name}} needs more time on Earth</a>
-        <input type="submit" class="btn" value="Send {{pet.name}} to Heaven">
+    <a href="{% url 'detail' pet.id %}" class="btn-large green">{{object.name}} needs more time on Earth</a>
+        <input type="submit" class="btn-large green" value="Send {{pet.name}} to Heaven">
       </form>
 
 {% endblock %}
